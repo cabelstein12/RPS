@@ -1,4 +1,5 @@
 const randomSel = ['rock', 'paper', 'scissors'];
+
 let playerSelection;
 let computerSelection;
 
@@ -7,23 +8,48 @@ const rockBtn = document.querySelector('.rock');
 const paperBtn = document.querySelector('.paper');
 const scissorsBtn = document.querySelector('.scissors');
 
-rockBtn.addEventListener('click', () => {
-    playerSelection = 'rock';
-    // getComputerChoice();
-    computerSelection = getComputerChoice()
-    playRound(playerSelection, computerSelection);
-})
+const prevGame = document.querySelector('.previous-game');
+const yourScore = document.querySelector('.player-score');
+// const computerScore = document.querySelector('.computer-score');
+let playerScore = 0;
+let computerScore = 0;
+
+function updateComputerScore(){
+    computerScore++;
+    document.getElementById("computerScore").textContent = computerScore;
+}
+
+function updatePlayerScore(){
+    playerScore++;
+    document.getElementById("playerScore").textContent = playerScore;
+}
+
+function handleButtonClick(choice){
+    playerSelection = choice;
+    computerSelection = getComputerChoice();
+    let result = playRound(playerSelection, computerSelection);
+    prevGame.textContent = `Last Match: ${result}... Computer Chose: ${computerSelection}`;
+
+
+    if (result === 'You Win') {
+        updatePlayerScore();
+    } else if (result === 'You Lose') {
+        updateComputerScore();
+    }
+    
+    
+}
+
+rockBtn.addEventListener('click', () => 
+    handleButtonClick('rock')
+)
 
 paperBtn.addEventListener('click', () => {
-    playerSelection = 'paper';
-    computerSelection = getComputerChoice()
-    playRound(playerSelection, computerSelection);
+    handleButtonClick('paper')
 })
 
 scissorsBtn.addEventListener('click', () => {
-    playerSelection = 'scissors';
-    computerSelection = getComputerChoice()
-    playRound(playerSelection, computerSelection);
+    handleButtonClick('scissors')
 })
 
 function getComputerChoice() {
@@ -35,7 +61,7 @@ function playRound(playerSelection, computerSelection) {
     
     switch (playerSelection) {
         case 'rock':
-            if (computerSelection === 'scissors') return 'You Win';
+            if (computerSelection === 'scissors')  return 'You Win';
             else if (computerSelection === 'paper') return 'You Lose';
             else return 'Tie!';
             break;
@@ -54,36 +80,31 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-let playerScore = 0;
-let pcScore = 0;
 
-// function game() {
-//     for (let i = 0; i < 5; i++) {
-//         const playerSelection = prompt("Enter your choice (rock, paper, or scissors)").toLowerCase();
-//         if (!['rock', 'paper', 'scissors'].includes(playerSelection)) {
-//             alert('Invalid input. Please choose rock, paper, or scissors.');
-//             continue;
-//         }
+function game(result) {
+    playRound(playerSelection, computerSelection);
+    for (let i = 0; i < 5; i++) {
         
-//         const computerSelection = getComputerChoice();
-//         const result = playRound(playerSelection, computerSelection);
         
-//         if (result === 'You Win') {
-//             playerScore += 1;
-//         } else if (result === 'You Lose') {
-//             pcScore += 1;
-//         }
+        const computerSelection = getComputerChoice();
+        result = playRound(playerSelection, computerSelection);
         
-//         alert(`Round ${i + 1}: ${result}\nPlayer Score: ${playerScore}\nComputer Score: ${pcScore}`);
-//     }
+        if (result === 'You Win') {
+            playerScore += 1;
+        } else if (result === 'You Lose') {
+            pcScore += 1;
+        }
+        
+        // alert(`Round ${i + 1}: ${result}\nPlayer Score: ${playerScore}\nComputer Score: ${pcScore}`);
+    }
     
-//     if (playerScore === 5) {
-//         return "You've Won";
-//     } else if (pcScore === 5) {
-//         return "You've Lost";
-//     } else {
-//         return "Game Over";
-//     }
-// }
+    if (playerScore === 5) {
+        return "You've Won";
+    } else if (pcScore === 5) {
+        return "You've Lost";
+    } else {
+        return "Game Over";
+    }
+}
 
-//alert(game());
+
