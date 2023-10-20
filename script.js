@@ -9,14 +9,23 @@ const paperBtn = document.querySelector('.paper');
 const scissorsBtn = document.querySelector('.scissors');
 
 const prevGame = document.querySelector('.previous-game');
-const yourScore = document.querySelector('.player-score');
+
 // const computerScore = document.querySelector('.computer-score');
 let playerScore = 0;
 let computerScore = 0;
+let roundsPlayed = 0;
 
 function updateComputerScore(){
     computerScore++;
     document.getElementById("computerScore").textContent = computerScore;
+}
+
+function resetScores(){
+    document.getElementById('computerScore').textContent = 0
+    document.getElementById('playerScore').textContent = 0
+    playerScore = 0;
+    computerScore= 0;
+    roundsPlayed = 0;
 }
 
 function updatePlayerScore(){
@@ -35,6 +44,20 @@ function handleButtonClick(choice){
         updatePlayerScore();
     } else if (result === 'You Lose') {
         updateComputerScore();
+    }
+
+    roundsPlayed++;
+
+    if(roundsPlayed === 5){
+        if (playerScore > computerScore){
+            prevGame.textContent = "You've Won best of 5!"
+            
+        } else if (playerScore < computerScore){
+            prevGame.textContent = "You Lost the best of 5..."
+        } else {
+            prevGame.textContent = "You tied!"
+        }
+        resetScores();
     }
     
     
@@ -81,30 +104,30 @@ function playRound(playerSelection, computerSelection) {
 }
 
 
-function game(result) {
-    playRound(playerSelection, computerSelection);
-    for (let i = 0; i < 5; i++) {
+// function game(result) {
+//     playRound(playerSelection, computerSelection);
+//     for (let i = 0; i < 5; i++) {
         
         
-        const computerSelection = getComputerChoice();
-        result = playRound(playerSelection, computerSelection);
+//         const computerSelection = getComputerChoice();
+//         result = playRound(playerSelection, computerSelection);
         
-        if (result === 'You Win') {
-            playerScore += 1;
-        } else if (result === 'You Lose') {
-            pcScore += 1;
-        }
+//         if (result === 'You Win') {
+//             playerScore += 1;
+//         } else if (result === 'You Lose') {
+//             pcScore += 1;
+//         }
         
-        // alert(`Round ${i + 1}: ${result}\nPlayer Score: ${playerScore}\nComputer Score: ${pcScore}`);
-    }
+//         // alert(`Round ${i + 1}: ${result}\nPlayer Score: ${playerScore}\nComputer Score: ${pcScore}`);
+//     }
     
-    if (playerScore === 5) {
-        return "You've Won";
-    } else if (pcScore === 5) {
-        return "You've Lost";
-    } else {
-        return "Game Over";
-    }
-}
+//     if (playerScore === 5) {
+//         return "You've Won";
+//     } else if (pcScore === 5) {
+//         return "You've Lost";
+//     } else {
+//         return "Game Over";
+//     }
+// }
 
 
